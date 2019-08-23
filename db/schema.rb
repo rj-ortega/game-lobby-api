@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,30 +10,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_820_160_269) do
+ActiveRecord::Schema.define(version: 2019_08_23_025838) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'games', force: :cascade do |t|
-    t.bigint 'user_id'
-    t.string 'name'
-    t.string 'img'
-    t.string 'platform'
-    t.decimal 'score'
-    t.text 'description'
-    t.boolean 'playing'
-    t.boolean 'wishlist'
-    t.boolean 'finished'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['user_id'], name: 'index_games_on_user_id'
+  create_table "games", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name"
+    t.string "cover"
+    t.string "genres", array: true
+    t.string "platforms", array: true
+    t.decimal "rating"
+    t.integer "rating_count"
+    t.string "release_dates", array: true
+    t.string "screenshots", array: true
+    t.text "summary"
+    t.text "url"
+    t.boolean "playing", default: false, null: false
+    t.boolean "wishlist", default: false, null: false
+    t.boolean "finished", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_games_on_user_id"
+  end
+  add_index "games", :genres, using: 'gin'
+  add_index "games", :platforms, using: 'gin'
+  add_index "games", :release_dates, using: 'gin'
+  add_index "games", :screenshots, using: 'gin'
+
+  create_table "searches", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'name'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_foreign_key 'games', 'users'
+  add_foreign_key "games", "users"
 end

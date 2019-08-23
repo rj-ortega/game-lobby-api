@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class GamesController < ApplicationController
   before_action :set_game, only: %i[show update destroy]
 
@@ -10,7 +8,6 @@ class GamesController < ApplicationController
     render json: @games
   end
 
-  # GET /games/1
   def show
     render json: @game
   end
@@ -20,7 +17,7 @@ class GamesController < ApplicationController
     @game = Game.new(game_params)
 
     if @game.save
-      render json: @game, status: :created, location: @game
+      render json: @game, status: :created
     else
       render json: @game.errors, status: :unprocessable_entity
     end
@@ -49,6 +46,6 @@ class GamesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def game_params
-    params.require(:game).permit(:user_id, :name, :img, :platform, :score, :description, :playing, :wishlist, :finished)
+    params.require(:game).permit(:user_id, :name, :cover, {:genres => []}, {:platforms => []}, :rating, :rating_count, {:release_dates => []}, {:screenshots => []}, :summary, :url, :playing, :wishlist, :finished)
   end
 end
